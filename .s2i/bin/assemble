@@ -25,8 +25,8 @@ cp -Rf /tmp/src/. ./
 
 if [[ -d ./config ]]; then
    echo "---> Configuring..."
-   mv config/influxdb.conf /etc/influxdb/influxdb.conf
-   mv config/supervisord.conf /etc/supervisord.conf
+   cp -r ./config/influxdb.conf /etc/influxdb/influxdb.conf
+   cp -r ./config/supervisord.conf /etc/supervisord.conf
 fi
 
 
