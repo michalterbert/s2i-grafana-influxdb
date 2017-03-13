@@ -30,9 +30,6 @@ RUN  mkdir /opt/grafana && cd /opt/grafana && \
      mv /opt/grafana/grafana-${GRAF_VERSION}/* /opt/grafana/ &&\
      rm -f /opt/grafana/grafana-${GRAF_VERSION}.linux-x64.tar.gz
 
-COPY influxdb.conf /etc/influxdb/influxdb.conf
-COPY supervisord.conf /etc/supervisord.conf
-
 # TODO (optional): Copy the builder files into /opt/app-root
 # COPY ./<builder_folder>/ /opt/app-root/
 
