@@ -20,14 +20,15 @@ if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
   mv /tmp/artifacts/. ./
 fi
 
+echo "---> Installing application source..."
+cp -Rf /tmp/src/. ./
+
 if [[ -d ./config ]]; then
    echo "---> Configuring..."
    mv config/influxdb.conf /etc/influxdb/influxdb.conf
-   mv supervisord.conf /etc/supervisord.conf
+   mv config/supervisord.conf /etc/supervisord.conf
 fi
 
-echo "---> Installing application source..."
-cp -Rf /tmp/src/. ./
 
 echo "---> Building application from source..."
 # TODO: Add build steps for your application, eg npm install, bundle install
