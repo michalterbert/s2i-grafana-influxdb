@@ -6,7 +6,7 @@ MAINTAINER Michal Terbert <michal.terbert@ing.com>
 # TODO: Rename the builder environment variable to inform users about application you provide them
 ENV   BUILDER_VERSION=1.0 \
       HOME=/opt/app-root/src \
-      INFLUX_VERSION=1.2.1\
+      INFLUX_VERSION=1.2.1 \
       GRAF_VERSION=4.1.2-1486989747
 
 # TODO: Set labels used in OpenShift to describe the builder image
@@ -26,8 +26,8 @@ RUN  wget -q https://dl.influxdata.com/influxdb/releases/influxdb-${INFLUX_VERSI
 #Install GRAFANA
 RUN  mkdir /opt/grafana && cd /opt/grafana && \
      wget -q https://grafanarel.s3.amazonaws.com/builds/grafana-${GRAF_VERSION}.linux-x64.tar.gz && \
-     tar -xvf grafana-${GRAF_VERSION}.linux-x64.tar.gz -C /opt/grafana/ &&\
-     mv /opt/grafana/grafana-${GRAF_VERSION}/* /opt/grafana/ &&\
+     tar -xvf grafana-${GRAF_VERSION}.linux-x64.tar.gz -C /opt/grafana/ && \
+     mv /opt/grafana/grafana-${GRAF_VERSION}/* /opt/grafana/ && \
      rm -f /opt/grafana/grafana-${GRAF_VERSION}.linux-x64.tar.gz
 
 # TODO (optional): Copy the builder files into /opt/app-root
@@ -37,7 +37,7 @@ RUN  mkdir /opt/grafana && cd /opt/grafana && \
 COPY ./.s2i/bin/ /usr/libexec/s2i
 
 # TODO: Drop the root user and make the content of /opt/app-root owned by user 1001
-RUN chown -R 1001:0 /opt/grafana /var/lib/influxdb
+RUN chown -R 1001:0 /opt/grafana /var/lib/influxdb /opt/app-root/
 
 # This default user is created in the openshift/base-centos7 image
 USER 1001
