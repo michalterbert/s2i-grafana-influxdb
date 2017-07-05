@@ -13,7 +13,7 @@ LABEL io.k8s.description="Platform for building Grafana with InfluxDB" \
       io.openshift.expose-services="8086:http,3000:httpui" \
       io.openshift.tags="builder,influxdb,grafana,metrics"
 
-#Install INFLUX
+#Install INFLUX & Supervisior
 RUN  wget -q https://dl.influxdata.com/influxdb/releases/influxdb-${INFLUX_VERSION}.x86_64.rpm && \
      rpm -ivh influxdb-${INFLUX_VERSION}.x86_64.rpm && \
      rm -f influxdb-${INFLUX_VERSION}.x86_64.rpm && \
@@ -23,13 +23,15 @@ RUN  wget -q https://dl.influxdata.com/influxdb/releases/influxdb-${INFLUX_VERSI
 #Install GRAFANA
 RUN  mkdir /opt/grafana && cd /opt/grafana && \
      wget -q https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-${GRAF_VERSION}.linux-x64.tar.gz && \
-     tar -xvf grafana-${GRAF_VERSION}.linux-x64.tar.gz -C /opt/grafana/ && \
+     tar -xf grafana-${GRAF_VERSION}.linux-x64.tar.gz -C /opt/grafana/ && \
      mv /opt/grafana/grafana-${GRAF_VERSION}/* /opt/grafana/ && \
      rm -f /opt/grafana/grafana-${GRAF_VERSION}.linux-x64.tar.gz
 
 COPY ./.s2i/bin/ /usr/libexec/s2i
 
-RUN chown -R 1001:0 /opt/grafana /var/lib/influxdb /opt/app-root/
+COPY ./test/test-app/config/supervisord.conf /etc/supervisord.conf
+
+RUN chown -R 1001:0 /opt/grafana /var/lib/influxdb /opt/app-root/ /etc/influxdb /etc/supervisord.conf
 
 USER 1001
 
